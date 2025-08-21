@@ -10,21 +10,25 @@
     --salvia:#6b7b5a;
     --cta:#556846;
     --ombra:rgba(0,0,0,.28);
+
+    /* Tweak rapidi per mobile (verticale) */
+    --m-album-top: 52vh;     /* Album subito sotto la data (aumenta/diminuisci se serve) */
+    --mobile-bg-y: 50%;      /* centratura verticale sfondo mobile: 50% = perfettamente centrato */
   }
 
   /* Reset base */
-  html,body{height:100%; margin:0; font-family:Georgia,serif; color:#333}
+  html,body{height:100%; min-height:100vh; margin:0; font-family:Georgia,serif; color:#333}
 
-  /* Sfondo – desktop orizzontale di default */
+  /* Sfondo – desktop (orizzontale) di default */
   body{
     background-image:url("sfondo-orizzontale.png");
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-size:cover;
-    background-position:center;
+    background-position:center center;
   }
 
-  /* Contenitori elementi */
+  /* Frase (desktop) */
   .quote{
     position:absolute;
     left:50%; transform:translateX(-50%);
@@ -33,62 +37,66 @@
     font-size:clamp(16px,2.5vw,22px);
     font-style:italic;
     text-align:center;
-    color:#444;
-    text-shadow:0 1px 2px rgba(255,255,255,.85);
+    color:var(--salvia); /* <- verde salvia */
+    text-shadow:
+      0 1px 2px rgba(255,255,255,.85),
+      0 0 1px rgba(0,0,0,.05);
   }
 
+  /* Album Foto (desktop) */
   .album{
     position:absolute;
     left:50%; transform:translateX(-50%);
-    top:71%;                     /* desktop: come prima */
+    top:71%;
   }
 
+  /* CTA sinistra (desktop) */
   .cta-left{
     position:absolute; left:28px; bottom:28px;
     display:flex; flex-direction:column; gap:12px;
   }
 
-  /* Bottoni */
+  /* Bottoni (stile base) */
   .cta{
     display:inline-flex; align-items:center; gap:.6em;
     background:var(--cta); color:#fff; text-decoration:none;
     padding:12px 16px; border-radius:12px; font-weight:700;
-    box-shadow:0 8px 18px rgba(0,0,0,.25);
+    box-shadow:0 8px 18px var(--ombra);
     transition:.2s transform,.2s box-shadow,.2s background;
     font-size:1rem;
   }
   .cta:hover{background:#445838; transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.3)}
 
-  /* MOBILE: sfondo verticale + regole richieste */
+  /* MOBILE: sfondo verticale + modifiche richieste */
   @media (max-width: 768px){
     body{
       background-image:url("sfondo-verticale.png");
       background-size:cover;
-      background-position:center top;
-      background-attachment:scroll; /* più fluido su mobile */
+      background-position: 50% var(--mobile-bg-y);
+      background-attachment:scroll;
     }
 
     /* Nascondi la frase su mobile */
     .quote{ display:none; }
 
-    /* Album Foto: subito sotto la data, centrato e più grande */
-    .album{
-      top:55vh;                  /* posizione sotto la data nel verticale */
-    }
+    /* Album Foto: subito sotto la data, centrato e PIÙ GRANDE */
+    .album{ top: var(--m-album-top); }
     .album .cta{
-      padding:16px 22px;
-      font-size:1.15rem;
-      border-radius:14px;
+      font-size: clamp(1.15rem, 4.2vw, 1.5rem);
+      padding: clamp(16px, 4vw, 22px) clamp(22px, 6vw, 30px);
+      border-radius:16px;
+      box-shadow:0 10px 24px var(--ombra);
     }
 
-    /* Chiesa + Ricevimento: in basso a sinistra, più grandi e con spaziatura */
+    /* Chiesa + Ricevimento: in basso a sinistra, PIÙ GRANDI */
     .cta-left{
-      left:16px; bottom:16px; gap:10px;
+      left:16px; bottom:18px; gap:12px;
     }
     .cta-left .cta{
-      padding:16px 22px;
-      font-size:1.12rem;
-      border-radius:14px;
+      font-size: clamp(1.12rem, 4vw, 1.4rem);
+      padding: clamp(16px, 4vw, 20px) clamp(20px, 5.6vw, 28px);
+      border-radius:16px;
+      box-shadow:0 10px 24px var(--ombra);
     }
   }
 </style>
@@ -111,3 +119,7 @@
 
 </body>
 </html>
+
+</body>
+</html>
+
