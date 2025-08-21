@@ -13,93 +13,101 @@
   }
 
   /* Reset base */
-  html,body{height:100%; margin:0; font-family:Georgia,serif; color:#333; background:#f7f3ea;}
+  html,body{height:100%; margin:0; font-family:Georgia,serif; color:#333}
 
-  /* Contenitore a tutta pagina con sfondo */
-  .page {
-    position:relative;
-    min-height:100dvh;        /* usa l'altezza visibile anche su mobile */
-    display:flex;
-    align-items:flex-end;     /* i bottoni restano in basso */
-    justify-content:center;   /* bottone centrale */
-    overflow:hidden;
-  }
-
-  /* Immagine di sfondo: versione desktop di default */
-  .page::before{
-    content:"";
-    position:absolute; inset:0;
-    background: url("./sfondo-orizzontale.png") center/cover no-repeat;
-    /* niente background-attachment:fixed (problemi su iOS) */
-    z-index:0;
+  /* Sfondo – desktop orizzontale di default */
+  body{
+    background-image:url("sfondo-orizzontale.png");
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-size:cover;
+    background-position:center;
   }
 
-  /* Su schermi in portrait usa lo sfondo verticale */
-  @media (orientation:portrait){
-    .page::before{
-      background-image:url("./sfondo-verticale.png");
-    }
-  }
-
-  /* Pannello CTA sinistra (Chiesa/Ricevimento) */
-  .cta-left{
-    position:absolute; left:16px; bottom:16px; z-index:1;
-    display:flex; flex-direction:column; gap:10px;
-  }
-  .cta{
-    display:inline-flex; align-items:center; gap:10px;
-    background:var(--cta); color:#fff; text-decoration:none;
-    padding:12px 16px; border-radius:12px; font-weight:700;
-    box-shadow:0 8px 18px var(--ombra);
-    transition:.2s transform,.2s box-shadow,.2s background;
-    white-space:nowrap;
-  }
-  .cta:hover{background:#445838; transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.3)}
-
-  /* Frase + bottone centrali (in basso) */
-  .center-block{
-    z-index:1;
-    width:min(92vw, 820px);
-    text-align:center;
-    margin-bottom:9vh;   /* distanza dal bordo basso; regola se vuoi */
-  }
-  .phrase{
-    margin:10px auto 16px;
-    font-size:clamp(16px,2.6vw,22px);
+  /* Contenitori elementi */
+  .quote{
+    position:absolute;
+    left:50%; transform:translateX(-50%);
+    top:77%;
+    width:80%;
+    font-size:clamp(16px,2.5vw,22px);
     font-style:italic;
+    text-align:center;
     color:#444;
     text-shadow:0 1px 2px rgba(255,255,255,.85);
   }
-  .album{
-    display:inline-block;
-    background:var(--cta); color:#fff; text-decoration:none;
-    padding:14px 20px; border-radius:12px; font-weight:700;
-    box-shadow:0 8px 18px var(--ombra);
-    transition:.2s transform,.2s box-shadow,.2s background;
-  }
-  .album:hover{background:#445838; transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.3)}
 
-  /* Mobile: un po’ più spazio sopra la frase */
-  @media (max-width: 680px){
-    .center-block{ margin-bottom:12vh; }
+  .album{
+    position:absolute;
+    left:50%; transform:translateX(-50%);
+    top:71%;                     /* desktop: come prima */
+  }
+
+  .cta-left{
+    position:absolute; left:28px; bottom:28px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+
+  /* Bottoni */
+  .cta{
+    display:inline-flex; align-items:center; gap:.6em;
+    background:var(--cta); color:#fff; text-decoration:none;
+    padding:12px 16px; border-radius:12px; font-weight:700;
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+    transition:.2s transform,.2s box-shadow,.2s background;
+    font-size:1rem;
+  }
+  .cta:hover{background:#445838; transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.3)}
+
+  /* MOBILE: sfondo verticale + regole richieste */
+  @media (max-width: 768px){
+    body{
+      background-image:url("sfondo-verticale.png");
+      background-size:cover;
+      background-position:center top;
+      background-attachment:scroll; /* più fluido su mobile */
+    }
+
+    /* Nascondi la frase su mobile */
+    .quote{ display:none; }
+
+    /* Album Foto: subito sotto la data, centrato e più grande */
+    .album{
+      top:55vh;                  /* posizione sotto la data nel verticale */
+    }
+    .album .cta{
+      padding:16px 22px;
+      font-size:1.15rem;
+      border-radius:14px;
+    }
+
+    /* Chiesa + Ricevimento: in basso a sinistra, più grandi e con spaziatura */
+    .cta-left{
+      left:16px; bottom:16px; gap:10px;
+    }
+    .cta-left .cta{
+      padding:16px 22px;
+      font-size:1.12rem;
+      border-radius:14px;
+    }
   }
 </style>
 </head>
 <body>
-  <main class="page">
 
-    <!-- Bottoni sinistra -->
-    <div class="cta-left" aria-label="Link utili a sinistra">
-      <a class="cta" href="https://maps.app.goo.gl/tT23MCJrEutKfNp1A" target="_blank" rel="noopener">📍 Chiesa</a>
-      <a class="cta" href="https://maps.app.goo.gl/ysow3DaFoUKMxufBA" target="_blank" rel="noopener">🍽️🥂 Ricevimento</a>
-    </div>
+  <!-- Frase (solo desktop; su mobile è nascosta via CSS) -->
+  <p class="quote">"Ci sono attimi che restano impressi più di mille parole. Aiutaci a custodirli con i tuoi occhi!"</p>
 
-    <!-- Frase + Album centrali -->
-    <div class="center-block">
-      <p class="phrase">“Ci sono attimi che restano impressi più di mille parole. Aiutaci a custodirli con i tuoi occhi!”</p>
-      <a class="album" href="https://photos.app.goo.gl/Zo1bhxAEnwmW7yi48" target="_blank" rel="noopener">📸 Album Foto</a>
-    </div>
+  <!-- Album Foto -->
+  <div class="album">
+    <a class="cta" href="https://photos.app.goo.gl/Zo1bhxAEnwmW7yi48" target="_blank" rel="noopener">📸 Album Foto</a>
+  </div>
 
-  </main>
+  <!-- Link utili in basso a sinistra -->
+  <div class="cta-left">
+    <a class="cta" href="https://maps.app.goo.gl/tT23MCJrEutKfNp1A" target="_blank" rel="noopener">📍 Chiesa</a>
+    <a class="cta" href="https://maps.app.goo.gl/ysow3DaFoUKMxufBA" target="_blank" rel="noopener">🍽️ Ricevimento</a>
+  </div>
+
 </body>
 </html>
