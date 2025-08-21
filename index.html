@@ -4,121 +4,123 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Rocco & Claudia – 6 Settembre 2025</title>
-
 <style>
   :root{
     --salvia:#6b7b5a;
     --cta:#556846;
     --ombra:rgba(0,0,0,.28);
-
-    /* Tweak rapidi per mobile (verticale) */
-    --m-album-top: 52vh;     /* Album subito sotto la data (aumenta/diminuisci se serve) */
-    --mobile-bg-y: 50%;      /* centratura verticale sfondo mobile: 50% = perfettamente centrato */
   }
 
   /* Reset base */
-  html,body{height:100%; min-height:100vh; margin:0; font-family:Georgia,serif; color:#333}
+  html,body{height:100%; margin:0; font-family:Georgia,serif; color:#333}
+  a{color:inherit; text-decoration:none}
 
-  /* Sfondo – desktop (orizzontale) di default */
+  /* Sfondo DESKTOP (orizzontale) */
   body{
     background-image:url("sfondo-orizzontale.png");
     background-repeat:no-repeat;
     background-attachment:fixed;
     background-size:cover;
-    background-position:center center;
+    background-position:center;
   }
 
-  /* Frase (desktop) */
-  .quote{
-    position:absolute;
-    left:50%; transform:translateX(-50%);
-    top:77%;
-    width:80%;
-    font-size:clamp(16px,2.5vw,22px);
-    font-style:italic;
-    text-align:center;
-    color:var(--salvia); /* <- verde salvia */
-    text-shadow:
-      0 1px 2px rgba(255,255,255,.85),
-      0 0 1px rgba(0,0,0,.05);
-  }
-
-  /* Album Foto (desktop) */
-  .album{
-    position:absolute;
-    left:50%; transform:translateX(-50%);
-    top:71%;
-  }
-
-  /* CTA sinistra (desktop) */
-  .cta-left{
-    position:absolute; left:28px; bottom:28px;
-    display:flex; flex-direction:column; gap:12px;
-  }
-
-  /* Bottoni (stile base) */
+  /* --- CTA comuni --- */
   .cta{
-    display:inline-flex; align-items:center; gap:.6em;
-    background:var(--cta); color:#fff; text-decoration:none;
-    padding:12px 16px; border-radius:12px; font-weight:700;
-    box-shadow:0 8px 18px var(--ombra);
-    transition:.2s transform,.2s box-shadow,.2s background;
-    font-size:1rem;
+    display:inline-flex; align-items:center; gap:.6rem;
+    background:var(--cta); color:#fff; font-weight:700;
+    padding:14px 20px; border-radius:14px;
+    box-shadow:0 10px 22px rgba(0,0,0,.25);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    will-change:transform, box-shadow;
   }
-  .cta:hover{background:#445838; transform:translateY(-2px); box-shadow:0 12px 22px rgba(0,0,0,.3)}
+  .cta:hover{ transform:translateY(-2px); background:#445838; box-shadow:0 14px 26px rgba(0,0,0,.32); }
 
-  /* MOBILE: sfondo verticale + modifiche richieste */
+  /* CTA sinistra (desktop: li teniamo invisibili; mobile: visibili) */
+  .cta-left{ position:fixed; left:24px; bottom:24px; display:none; flex-direction:column; gap:12px; z-index:3; }
+  .cta-left .cta{ font-size:1rem; padding:14px 18px; border-radius:14px; }
+
+  /* Album (desktop: invisibile; mobile: visibile e centrato) */
+  .album{ position:fixed; left:50%; transform:translateX(-50%); bottom:18vh; display:none; z-index:3; }
+  .album .cta{ font-size:1.05rem; padding:16px 22px; border-radius:16px; }
+
+  /* Data e frase (mostrate solo su mobile) */
+  .date, .phrase{ display:none; }
+
+  /* ---------- MOBILE ---------- */
   @media (max-width: 768px){
+
+    /* Sfondo VERTICALE con lieve regolazione di 2px */
     body{
       background-image:url("sfondo-verticale.png");
-      background-size:cover;
-      background-position: 50% var(--mobile-bg-y);
+      background-repeat:no-repeat;
       background-attachment:scroll;
+      background-size:cover;
+      /* abbasso di 2px come richiesto */
+      background-position: 50% calc(50% + 2px);
     }
 
-    /* Nascondi la frase su mobile */
-    .quote{ display:none; }
-
-    /* Album Foto: subito sotto la data, centrato e PIÙ GRANDE */
-    .album{ top: var(--m-album-top); }
-    .album .cta{
-      font-size: clamp(1.15rem, 4.2vw, 1.5rem);
-      padding: clamp(16px, 4vw, 22px) clamp(22px, 6vw, 30px);
-      border-radius:16px;
-      box-shadow:0 10px 24px var(--ombra);
+    /* Data: sotto R&C con un po' più spazio sopra */
+    .date{
+      display:block;
+      position:fixed;
+      left:50%; transform:translateX(-50%);
+      top:30vh;        /* posizione verticale di base */
+      margin-top:20px; /* + spazio tra R&C (nell’immagine) e la data */
+      font-size: clamp(22px, 6vw, 30px);
+      color:#5b6a71;
+      font-style: italic;
+      text-shadow: 0 1px 2px rgba(255,255,255,.88);
+      z-index:2;
+      text-align:center;
+      width:90vw;
     }
 
-    /* Chiesa + Ricevimento: in basso a sinistra, PIÙ GRANDI */
-    .cta-left{
-      left:16px; bottom:18px; gap:12px;
+    /* Frase in verde salvia sotto l’album */
+    .phrase{
+      display:block;
+      position:fixed;
+      left:50%; transform:translateX(-50%);
+      bottom:25vh;              /* sopra al bottone album */
+      width:90vw;
+      text-align:center;
+      font-size: clamp(14px, 4.4vw, 18px);
+      font-style: italic;
+      color: var(--salvia);     /* verde salvia */
+      text-shadow: 0 1px 1px rgba(255,255,255,.75);
+      z-index:2;
     }
-    .cta-left .cta{
-      font-size: clamp(1.12rem, 4vw, 1.4rem);
-      padding: clamp(16px, 4vw, 20px) clamp(20px, 5.6vw, 28px);
-      border-radius:16px;
-      box-shadow:0 10px 24px var(--ombra);
-    }
+
+    /* Mostra CTA su mobile e ingrandisci */
+    .cta-left{ display:flex; }
+    .cta-left .cta{ font-size:1.05rem; padding:16px 22px; border-radius:16px; }
+    .album{ display:block; }
+    .album .cta{ font-size:1.12rem; padding:18px 26px; border-radius:18px; }
   }
 </style>
 </head>
 <body>
 
-  <!-- Frase (solo desktop; su mobile è nascosta via CSS) -->
-  <p class="quote">"Ci sono attimi che restano impressi più di mille parole. Aiutaci a custodirli con i tuoi occhi!"</p>
+  <!-- Data (mobile) -->
+  <h1 class="date"><em>6 Settembre 2025</em></h1>
 
-  <!-- Album Foto -->
+  <!-- Album Foto (mobile, centrato sotto la data) -->
   <div class="album">
     <a class="cta" href="https://photos.app.goo.gl/Zo1bhxAEnwmW7yi48" target="_blank" rel="noopener">📸 Album Foto</a>
   </div>
 
-  <!-- Link utili in basso a sinistra -->
-  <div class="cta-left">
+  <!-- Frase (mobile, in verde salvia) -->
+  <p class="phrase">“Ci sono attimi che restano impressi più di mille parole. Aiutaci a custodirli con i tuoi occhi!”</p>
+
+  <!-- CTA sinistra (mobile) -->
+  <div class="cta-left" aria-label="Link utili">
     <a class="cta" href="https://maps.app.goo.gl/tT23MCJrEutKfNp1A" target="_blank" rel="noopener">📍 Chiesa</a>
-    <a class="cta" href="https://maps.app.goo.gl/ysow3DaFoUKMxufBA" target="_blank" rel="noopener">🍽️ Ricevimento</a>
+    <a class="cta" href="https://maps.app.goo.gl/ysow3DaFoUKMxufBA" target="_blank" rel="noopener">🍽️🥂 Ricevimento</a>
   </div>
 
 </body>
 </html>
+
+
 
 
 
